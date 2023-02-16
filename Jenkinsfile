@@ -10,9 +10,9 @@ pipeline {
             stage ("Prepare Docker"){
                 steps {
                     script {
-                        sh 'docker rm --force crud'
-                        sh 'docker rm --force tests'
-                        sh 'docker network ls|grep ${env.DOCKER_NETWORK} > /dev/null || docker network create --driver bridge ${env.DOCKER_NETWORK}'
+                        sh "docker rm --force crud"
+                        sh "docker rm --force tests"
+                        sh "docker network ls|grep ${env.DOCKER_NETWORK} > /dev/null || docker network create --driver bridge ${env.DOCKER_NETWORK}"
                     }
                 }
             }
@@ -20,13 +20,13 @@ pipeline {
                 steps {
                     git credentialsId: '0bade186-02c7-4982-a481-adc7f91286d8', url: 'https://github.com/YaroslavBrek/crud-app.git'
                     script {
-                        sh 'docker build -t tests --build-arg envUrl=${env.ENV_URL} --build-arg envPort=${env.ENV_PORT} --build-arg testGroup=${env.TEST_GROUP} .'
-                        sh 'docker run \
+                        sh "docker build -t tests --build-arg envUrl=${env.ENV_URL} --build-arg envPort=${env.ENV_PORT} --build-arg testGroup=${env.TEST_GROUP} ."
+                        sh "docker run \
                                 -d \
                                 --network "${env.DOCKER_NETWORK}" \
                                 --name "crud" \
                                 -p 9000:9000 \
-                                app'
+                                app"
                             }                        
                 }
             }
@@ -39,12 +39,12 @@ pipeline {
                 steps {
                     git credentialsId: '0bade186-02c7-4982-a481-adc7f91286d8', url: 'https://github.com/YaroslavBrek/api-tests.git'
                     script {
-                        sh 'docker build -t tests .'
-                        sh 'docker run \
+                        sh "docker build -t tests ."
+                        sh "docker run \
                                 --name "tests" \
                                 --network "${env.DOCKER_NETWORK}" \
                                 -p 9001:9000 \
-                                tests'
+                                tests"
                         }
             }
         }
