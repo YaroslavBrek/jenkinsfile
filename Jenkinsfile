@@ -23,8 +23,8 @@ pipeline {
                         sh "docker build -t tests --build-arg envUrl=${env.ENV_URL} --build-arg envPort=${env.ENV_PORT} --build-arg testGroup=${env.TEST_GROUP} ."
                         sh "docker run \
                                 -d \
-                                --network "${env.DOCKER_NETWORK}" \
-                                --name "crud" \
+                                --network '${env.DOCKER_NETWORK}' \
+                                --name 'crud' \
                                 -p 9000:9000 \
                                 app"
                             }                        
@@ -41,8 +41,8 @@ pipeline {
                     script {
                         sh "docker build -t tests ."
                         sh "docker run \
-                                --name "tests" \
-                                --network "${env.DOCKER_NETWORK}" \
+                                --name 'tests' \
+                                --network '${env.DOCKER_NETWORK}' \
                                 -p 9001:9000 \
                                 tests"
                         }
