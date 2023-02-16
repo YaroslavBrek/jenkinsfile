@@ -9,7 +9,7 @@ pipeline {
     stages {
             stage ("Prepare Docker"){
                 steps {
-                    script{
+                    script {
                         sh 'docker rm --force crud'
                         sh 'docker rm --force tests'
                         sh 'docker network ls|grep ${env.DOCKER_NETWORK} > /dev/null || docker network create --driver bridge ${env.DOCKER_NETWORK}'
@@ -19,7 +19,7 @@ pipeline {
             stage('Build and run CRUD app') {
                 steps {
                     git credentialsId: '0bade186-02c7-4982-a481-adc7f91286d8', url: 'https://github.com/YaroslavBrek/crud-app.git'
-                    script{
+                    script {
                         sh 'docker build -t tests --build-arg envUrl=${env.ENV_URL} --build-arg envPort=${env.ENV_PORT} --build-arg testGroup=${env.TEST_GROUP} .'
                         sh 'docker run \
                                 -d \
@@ -38,7 +38,7 @@ pipeline {
             stage('Run tests against CRUD app') {
                 steps {
                     git credentialsId: '0bade186-02c7-4982-a481-adc7f91286d8', url: 'https://github.com/YaroslavBrek/api-tests.git'
-                    script{
+                    script {
                         sh 'docker build -t tests .'
                         sh 'docker run \
                                 --name "tests" \
