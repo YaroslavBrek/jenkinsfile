@@ -25,7 +25,7 @@ pipeline {
                                 -d \
                                 --network '${env.DOCKER_NETWORK}' \
                                 --name 'crud' \
-                                -p 9000:9000 \
+                                -p ${env.ENV_PORT}:${env.ENV_PORT} \
                                 app"
                             }                        
                 }
@@ -43,7 +43,7 @@ pipeline {
                         sh "docker run \
                                 --name 'tests' \
                                 --network '${env.DOCKER_NETWORK}' \
-                                -p 9001:9000 \
+                                -p 9001:${env.ENV_PORT} \
                                 tests"
                         }
             }
