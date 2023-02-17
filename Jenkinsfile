@@ -33,7 +33,7 @@ pipeline {
             stage ("Wait until app is up") {
                  steps {
                     script {
-                        sh "url='http://${env.ENV_URL}:${env.ENV_PORT}'
+                        sh "url=http://${env.ENV_URL}:${env.ENV_PORT}
                             attempts=5
                             timeout=5
                             echo 'Checking status of $url.'
