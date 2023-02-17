@@ -34,7 +34,7 @@ pipeline {
                  steps {
                     script {
                         sh '''#!/bin/bash
-                            url=http://${env.ENV_URL}:${env.ENV_PORT}
+                            url=http://crud:9000/user
                             attempts=5
                             timeout=5
                             echo 'Checking status of $url.'
