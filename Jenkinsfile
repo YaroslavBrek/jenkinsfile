@@ -36,7 +36,7 @@ pipeline {
                         sh '''#!/bin/bash \
                             attempt_counter=0 \
                             max_attempts=5 \
-                            until $(curl --output /dev/null --silent --head --fail http://${env.ENV_URL}:${env.ENV_PORT}); do \
+                            until $(curl --output /dev/null --silent --head --fail http://crud:9000); do \
                                 if [ ${attempt_counter} -eq ${max_attempts} ];then \
                                   echo 'Max attempts reached' \
                                   exit 1 \
