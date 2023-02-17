@@ -33,23 +33,21 @@ pipeline {
             stage ("Wait until app is up") {
                  steps {
                     script {
-                        sh '''#!/bin/bash
-                            url='http://crud:9000/user'
-                            attempts=5
-                            timeout=5
-                            echo 'Checking status of $url.'
-                            for (( i=1; i<=$attempts; i++ ))
-                            do
-                              code=`curl -sL --connect-timeout 20 --max-time 30 -w "%{http_code}\\n" "$url" -o /dev/null`
-                              echo 'Found code $code for $url.'
-                              if [ "$code" = "200" ]; then
-                                echo 'Website $url is online.'
-                                break
-                              else
-                                echo 'Website $url seems to be offline yet. Waiting $timeout seconds.'
-                                sleep $timeout
-                              fi
-                            done '''
+                        sh "
+                           attempt_counter=0
+                           max_attempts=5
+
+                           until $(curl --output /dev/null --silent --head --fail http://${env.ENV_URL}:${env.ENV_PORT}); do
+                               if [ ${attempt_counter} -eq ${max_attempts} ];then
+                                 echo 'Max attempts reached'
+                                 exit 1
+                               fi
+
+                               printf '.'
+                               attempt_counter=$(($attempt_counter+1))
+                               sleep 5
+                           done
+                             "
                         }
                  }
             }
