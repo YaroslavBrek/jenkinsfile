@@ -33,7 +33,7 @@ pipeline {
             stage ("Wait until app is up") {
                  steps {
                     script {
-                        sh "attempt_counter=0 \
+                        sh '''attempt_counter=0 \
                             max_attempts=5 \
                             until $(curl --output /dev/null --silent --head --fail http://${env.ENV_URL}:${env.ENV_PORT}); do \
                                 if [ ${attempt_counter} -eq ${max_attempts} ];then \
@@ -43,7 +43,7 @@ pipeline {
                                 printf '.' \
                                 attempt_counter=$(($attempt_counter+1)) \
                                 sleep 5 \
-                            done"
+                            done '''
                     }
                  }
             }
