@@ -33,7 +33,8 @@ pipeline {
             stage ("Wait until app is up") {
                  steps {
                     script {
-                        sh "url=http://${env.ENV_URL}:${env.ENV_PORT}
+                        sh '''#!/bin/bash
+                            url=http://${env.ENV_URL}:${env.ENV_PORT}
                             attempts=5
                             timeout=5
                             echo 'Checking status of $url.'
@@ -48,7 +49,7 @@ pipeline {
                                 echo 'Website $url seems to be offline yet. Waiting $timeout seconds.'
                                 sleep $timeout
                               fi
-                            done"
+                            done '''
                         }
                  }
             }
