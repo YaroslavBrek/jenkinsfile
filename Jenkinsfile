@@ -34,7 +34,7 @@ pipeline {
                  steps {
                     script {
                         sh '''#!/bin/bash
-                            url=http://crud:9000/user
+                            url='http://crud:9000/user'
                             attempts=5
                             timeout=5
                             echo 'Checking status of $url.'
