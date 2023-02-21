@@ -18,7 +18,7 @@ pipeline {
             }
             stage('Build and run CRUD app') {
                 steps {
-                    git credentialsId: '0bade186-02c7-4982-a481-adc7f91286d8', url: 'https://github.com/YaroslavBrek/crud-app.git'
+                    git 'https://github.com/YaroslavBrek/crud-app.git'
                     script {
                         sh "docker build -t app ."
                         sh "docker run \
@@ -39,7 +39,7 @@ pipeline {
             }
             stage('Run tests against CRUD app') {
                 steps {
-                    git credentialsId: '0bade186-02c7-4982-a481-adc7f91286d8', url: 'https://github.com/YaroslavBrek/api-tests.git'
+                    git 'https://github.com/YaroslavBrek/api-tests.git'
                     script {
                         sh "docker build -t tests --build-arg envUrl=${env.ENV_URL} --build-arg envPort=${env.ENV_PORT} --build-arg testGroup=${env.TEST_GROUP} ."
                         sh "docker run \
