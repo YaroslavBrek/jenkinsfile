@@ -45,6 +45,7 @@ pipeline {
                         sh "docker run \
                                 --name 'tests' \
                                 --network '${env.DOCKER_NETWORK}' \
+                                -v allure-results:/var/target/allure-results \
                                 -p 9001:${env.ENV_PORT} \
                                 tests"
                         }
