@@ -16,7 +16,7 @@ pipeline {
             stage ("Prepare Docker"){
                 steps {
                     script {
-                        sh "echo 'Build number is ${env.DOCKER_NETWORK}'"
+                        sh "echo 'Build number is ${env.BUILD_NUMBER}'"
                         sh "echo ${env.ENV_WORKSPACE}"
                         sh "docker rm --force ${env.APP_CONTAINER_NAME}"
                         sh "docker rm --force ${env.TESTS_CONTAINER_NAME}"
@@ -56,10 +56,16 @@ pipeline {
                                 --volumes-from ${env.JENKINS_CONTAINER_NAME} \
                                 -p ${env.ALLURE_REPORT_PORT}:${env.ALLURE_REPORT_PORT} \
                                 ${env.TESTS_CONTAINER_NAME}"
-                        sh "sleep 60"
-                        sh "docker exec tests cp -R target/allure-results/ ${env.ENV_WORKSPACE}/target/allure-results"
                     }
                 }
+            }
+            stage ("Wait tests are running and copy results") {
+                   steps {
+                       script {
+                            sh "sleep 60"
+                            sh "docker exec tests cp -R target/allure-results/ ${env.ENV_WORKSPACE}/target/allure-results"
+                       }
+                   }
             }
 //             stage('Generate Allure Report') {
 //                 steps {
