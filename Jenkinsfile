@@ -50,7 +50,7 @@ pipeline {
                     git 'https://github.com/YaroslavBrek/api-tests.git'
                     script {
                         sh "docker build -t ${env.TESTS_CONTAINER_NAME} --build-arg envUrl=${env.ENV_URL} --build-arg envPort=${env.ENV_PORT} --build-arg testGroup=${env.TEST_GROUP} ."
-                        sh "docker run \
+                        sh "docker run -d -ti --rm \
                                 --name '${env.TESTS_CONTAINER_NAME}' \
                                 --network '${env.DOCKER_NETWORK}' \
                                 --volumes-from ${env.JENKINS_CONTAINER_NAME} \
