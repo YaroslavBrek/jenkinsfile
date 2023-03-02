@@ -11,6 +11,7 @@ pipeline {
                 steps {
                     script {
                         sh "echo 'Build number is ${currentBuild.number}'"
+                        sh "pwd"
                         sh "docker rm --force crud"
                         sh "docker rm --force tests"
                         sh "docker network ls|grep ${env.DOCKER_NETWORK} > /dev/null || docker network create --driver bridge ${env.DOCKER_NETWORK}"
