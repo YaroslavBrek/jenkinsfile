@@ -57,7 +57,7 @@ pipeline {
                                 -p ${env.ALLURE_REPORT_PORT}:${env.ALLURE_REPORT_PORT} \
                                 ${env.TESTS_CONTAINER_NAME}"
                         sh "sleep 60"
-                        sh "docker exec tests cp -R target/allure-results/ ${env.ENV_WORKSPACE}/${env.BUILD_NUMBER}/target/allure-results"
+                        sh "docker exec tests cp -R target/allure-results/ ${env.ENV_WORKSPACE}/target/allure-results"
                     }
                 }
             }
