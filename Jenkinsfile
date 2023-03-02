@@ -5,7 +5,7 @@ pipeline {
         ENV_URL='crud'
         ENV_PORT='9000'
         DOCKER_NETWORK='external-api'
-        BUILD_NUMBER=${currentBuild.number}
+        BUILD_NUMBER="${currentBuild.number}"
     }
     stages {
             stage ("Prepare Docker"){
