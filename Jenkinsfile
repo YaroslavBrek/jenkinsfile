@@ -59,16 +59,14 @@ pipeline {
                     }
                 }
             }
-            timeout(100) {
-                waitUntil {
-                   script {
-                     def r = sh script: 'ping -q http://tests:9090 -O /dev/null', returnStdout: true
-                     return (r == 0);
-                   }
-                }
-            }
             stage ("Copy tests results") {
                    steps {
+                   waitUntil {
+                                      script {
+                                        def r = sh script: 'ping -q http://tests:9090 -O /dev/null', returnStdout: true
+                                        return (r == 0);
+                                      }
+                                   }
                        script {
                             sh "docker exec tests rm -R /var/jenkins_home/workspace/run-app-and-tests/allure-results"
                             sh "docker exec tests cp -R target/allure-results/ ${env.ENV_WORKSPACE}/allure-results"
