@@ -67,18 +67,18 @@ pipeline {
                        }
                    }
             }
-//             stage('Generate Allure Report') {
-//                 steps {
-//                     script {
-//                         allure([
-//                                 includeProperties: false,
-//                                 jdk: '',
-//                                 properties: [],
-//                                 reportBuildPolicy: 'ALWAYS',
-//                                 results: [[path: 'target/allure-results']]
-//                         ])
-//                     }
-//                 }
-//             }
+            stage('Generate Allure Report') {
+                steps {
+                    script {
+                        allure([
+                                includeProperties: false,
+                                jdk: '',
+                                properties: [],
+                                reportBuildPolicy: 'ALWAYS',
+                                results: [[path: 'allure-results']]
+                        ])
+                    }
+                }
+            }
     }
 }
