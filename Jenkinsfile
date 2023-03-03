@@ -35,13 +35,23 @@ pipeline {
                                 --name '${env.APP_CONTAINER_NAME}' \
                                 -p ${env.ENV_PORT}:${env.ENV_PORT} \
                                 ${env.APP_CONTAINER_NAME}"
-                        }
+                    }
                 }
             }
             stage ("Wait until app is up") {
                  steps {
-                    script {
-                        sh "sleep 10"
+                    timeout(5) {
+                       waitUntil {
+                          script {
+                              try {
+                                  def response = httpRequest 'http://${env.APP_CONTAINER_NAME}:${env.ENV_PORT}/'
+                                  return (response.status == 200)
+                              }
+                              catch (exception) {
+                              return false
+                              }
+                          }
+                       }
                     }
                  }
             }
@@ -61,7 +71,7 @@ pipeline {
                         waitUntil {
                             script {
                                 try {
-                                    def response = httpRequest 'http://tests:9090/'
+                                    def response = httpRequest 'http://${env.TESTS_CONTAINER_NAME}:${env.ALLURE_REPORT_PORT}/'
                                     return (response.status == 200)
                                 }
                                 catch (exception) {
