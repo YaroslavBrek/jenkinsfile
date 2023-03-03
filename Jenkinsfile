@@ -24,7 +24,7 @@ pipeline {
                     }
                 }
             }
-            stage('Build and run CRUD app') {
+            stage('Build and start the application') {
                 steps {
                     git 'https://github.com/YaroslavBrek/crud-app.git'
                     script {
@@ -38,13 +38,15 @@ pipeline {
                     }
                 }
             }
-            stage ("Wait until app is up") {
+            stage ("Wait until application is running") {
                  steps {
                     timeout(5) {
                        waitUntil {
                           script {
+                          def envUrl = ${env.APP_CONTAINER_NAME}
+                          def envPort = ${env.ENV_PORT}
                               try {
-                                  def response = httpRequest 'http://${env.APP_CONTAINER_NAME}:${env.ENV_PORT}/'
+                                  def response = httpRequest 'http://${envUrl}:${envPort}/'
                                   return (response.status == 200)
                               }
                               catch (exception) {
@@ -55,7 +57,7 @@ pipeline {
                     }
                  }
             }
-            stage('Run tests against CRUD app') {
+            stage('Run tests and generate report') {
                 steps {
                     git 'https://github.com/YaroslavBrek/api-tests.git'
                     script {
@@ -90,7 +92,7 @@ pipeline {
                        }
                    }
             }
-            stage('Generate Allure Report') {
+            stage('Generate the Allure report') {
                 steps {
                     script {
                         allure([
