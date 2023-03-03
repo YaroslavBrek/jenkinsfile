@@ -63,7 +63,7 @@ pipeline {
                    steps {
                    waitUntil {
                                       script {
-                                        def r = sh script: 'ping -q http://tests:9090 -O /dev/null', returnStdout: true
+                                        def r = sh script: 'wget -q http://tests:9090 -O /dev/null', returnStdout: true
                                         return (r == 0);
                                       }
                                    }
