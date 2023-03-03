@@ -63,6 +63,7 @@ pipeline {
                    steps {
                        script {
                             sh "sleep 60"
+                            sh "docker exec tests rm -R /var/jenkins_home/workspace/run-app-and-tests/allure-results"
                             sh "docker exec tests cp -R target/allure-results/ ${env.ENV_WORKSPACE}/allure-results"
                        }
                    }
