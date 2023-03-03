@@ -50,13 +50,21 @@ pipeline {
                     git 'https://github.com/YaroslavBrek/api-tests.git'
                     script {
                         sh "docker build -t ${env.TESTS_CONTAINER_NAME} --build-arg envUrl=${env.ENV_URL} --build-arg envPort=${env.ENV_PORT} --build-arg testGroup=${env.TEST_GROUP} ."
-                        sh "docker run -i --rm \
+                        sh "docker run -d -ti --rm \
                                 --name '${env.TESTS_CONTAINER_NAME}' \
                                 --network '${env.DOCKER_NETWORK}' \
                                 --volumes-from ${env.JENKINS_CONTAINER_NAME} \
                                 -p ${env.ALLURE_REPORT_PORT}:${env.ALLURE_REPORT_PORT} \
                                 ${env.TESTS_CONTAINER_NAME}"
                     }
+                }
+            }
+            timeout(100) {
+                waitUntil {
+                   script {
+                     def r = sh script: 'ping -q http://tests:9090 -O /dev/null', returnStdout: true
+                     return (r == 0);
+                   }
                 }
             }
             stage ("Copy tests results") {
