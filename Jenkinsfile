@@ -44,7 +44,7 @@ pipeline {
                          waitUntil {
                             script {
                                 try {
-                                    def response = httpRequest "http://'${env.APP_CONTAINER_NAME}':'${env.ENV_PORT}'"
+                                    def response = httpRequest "http://${env.APP_CONTAINER_NAME}:${env.ENV_PORT}"
                                     return (response.status == 200)
                                 }
                                 catch (exception) {
@@ -71,7 +71,7 @@ pipeline {
                         waitUntil {
                             script {
                                 try {
-                                    def response = httpRequest "http://'${env.TESTS_CONTAINER_NAME}':'${env.ALLURE_REPORT_PORT}/'"
+                                    def response = httpRequest "http://${env.TESTS_CONTAINER_NAME}:${env.ALLURE_REPORT_PORT}/"
                                     return (response.status == 200)
                                 }
                                 catch (exception) {
