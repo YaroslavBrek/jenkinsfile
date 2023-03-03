@@ -59,10 +59,9 @@ pipeline {
                     }
                 }
             }
-            stage ("Wait tests are running and copy results") {
+            stage ("Copy tests results") {
                    steps {
                        script {
-                            sh "sleep 60"
                             sh "docker exec tests cp -R target/allure-results/ ${env.ENV_WORKSPACE}/target/allure-results"
                        }
                    }
