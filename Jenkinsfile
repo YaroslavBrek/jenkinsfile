@@ -61,7 +61,7 @@ pipeline {
                         waitUntil {
                             script {
                                 try {
-                                    def response = httpRequest 'http://tests:9090/'
+                                    def response = httpRequest 'http://localhost:9090/'
                                     return (response.status == 200)
                                 }
                                 catch (exception) {
