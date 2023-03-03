@@ -50,30 +50,30 @@ pipeline {
                     git 'https://github.com/YaroslavBrek/api-tests.git'
                     script {
                         sh "docker build -t ${env.TESTS_CONTAINER_NAME} --build-arg envUrl=${env.ENV_URL} --build-arg envPort=${env.ENV_PORT} --build-arg testGroup=${env.TEST_GROUP} ."
-                        sh "docker run \
+                        sh "docker run -d -ti --rm \
                                 --name '${env.TESTS_CONTAINER_NAME}' \
                                 --network '${env.DOCKER_NETWORK}' \
                                 --volumes-from ${env.JENKINS_CONTAINER_NAME} \
                                 -p ${env.ALLURE_REPORT_PORT}:${env.ALLURE_REPORT_PORT} \
                                 ${env.TESTS_CONTAINER_NAME}"
                     }
+                    timeout(5) {
+                        waitUntil {
+                            script {
+                                try {
+                                    def response = httpRequest 'http://tests:9090/'
+                                    return (response.status == 200)
+                                }
+                                catch (exception) {
+                                     return false
+                                }
+                            }
+                        }
+                    }
                 }
             }
             stage ("Copy tests results") {
                    steps {
-                   timeout(5) {
-                                           waitUntil {
-                                               script {
-                                                   try {
-                                                       def response = httpRequest 'tests:9090'
-                                                       return (response.status == 200)
-                                                   }
-                                                   catch (exception) {
-                                                        return false
-                                                   }
-                                               }
-                                           }
-                                       }
                        script {
                             sh "docker exec tests rm -R /var/jenkins_home/workspace/run-app-and-tests/allure-results"
                             sh "docker exec tests cp -R target/allure-results/ ${env.ENV_WORKSPACE}/allure-results"
