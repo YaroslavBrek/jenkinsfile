@@ -44,7 +44,7 @@ pipeline {
                          waitUntil {
                             script {
                                 try {
-                                    def response = httpRequest "http://${env.APP_CONTAINER_NAME}:${env.ENV_PORT}"
+                                    def response = httpRequest "http://${env.APP_CONTAINER_NAME}:${env.ENV_PORT}/user"
                                     return (response.status == 200)
                                 }
                                 catch (exception) {
