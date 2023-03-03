@@ -57,16 +57,23 @@ pipeline {
                                 -p ${env.ALLURE_REPORT_PORT}:${env.ALLURE_REPORT_PORT} \
                                 ${env.TESTS_CONTAINER_NAME}"
                     }
+                    timeout(5) {
+                        waitUntil {
+                            script {
+                                try {
+                                    def response = httpRequest 'http://tests:9090/'
+                                    return (response.status == 200)
+                                }
+                                catch (exception) {
+                                     return false
+                                }
+                            }
+                        }
+                    }
                 }
             }
             stage ("Copy tests results") {
                    steps {
-                   waitUntil {
-                                      script {
-                                        def r = sh script: 'wget -q http://tests:9090 -O /dev/null', returnStdout: true
-                                        return (r == 0);
-                                      }
-                                   }
                        script {
                             sh "docker exec tests rm -R /var/jenkins_home/workspace/run-app-and-tests/allure-results"
                             sh "docker exec tests cp -R target/allure-results/ ${env.ENV_WORKSPACE}/allure-results"
