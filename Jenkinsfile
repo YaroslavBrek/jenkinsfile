@@ -41,21 +41,19 @@ pipeline {
             stage ("Wait until application is running") {
                  steps {
                     timeout(5) {
-                       waitUntil {
-                          script {
-                          def envUrl = ${env.APP_CONTAINER_NAME}
-                          def envPort = ${env.ENV_PORT}
-                              try {
-                                  def response = httpRequest 'http://${envUrl}:${envPort}/'
-                                  return (response.status == 200)
-                              }
-                              catch (exception) {
-                              return false
-                              }
-                          }
-                       }
+                         waitUntil {
+                            script {
+                                try {
+                                    def response = httpRequest "http://'${env.APP_CONTAINER_NAME}':'${env.ENV_PORT}'"
+                                    return (response.status == 200)
+                                }
+                                catch (exception) {
+                                return false
+                                }
+                            }
+                        }
                     }
-                 }
+                }     
             }
             stage('Run tests and generate report') {
                 steps {
@@ -73,7 +71,7 @@ pipeline {
                         waitUntil {
                             script {
                                 try {
-                                    def response = httpRequest 'http://${env.TESTS_CONTAINER_NAME}:${env.ALLURE_REPORT_PORT}/'
+                                    def response = httpRequest "http://'${env.TESTS_CONTAINER_NAME}':'${env.ALLURE_REPORT_PORT}/'"
                                     return (response.status == 200)
                                 }
                                 catch (exception) {
