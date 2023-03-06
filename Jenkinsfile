@@ -17,7 +17,6 @@ pipeline {
                     script {
                         sh "docker rm --force ${env.APP_CONTAINER_NAME}"
                         sh "docker rm --force ${env.TESTS_CONTAINER_NAME}"
-                        sh "docker network ls|grep ${env.DOCKER_NETWORK} > /dev/null || docker network create --driver bridge ${env.DOCKER_NETWORK}"
                     }
                 }
             }
