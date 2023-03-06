@@ -6,7 +6,6 @@ pipeline {
         ENV_PORT='9000'
         ALLURE_REPORT_PORT='9090'
         DOCKER_NETWORK='external-api'
-        BUILD_NUMBER="${currentBuild.number}"
         JENKINS_CONTAINER_NAME='jenkins_in_docker'
         TESTS_CONTAINER_NAME='tests'
         APP_CONTAINER_NAME='crud'
@@ -16,8 +15,6 @@ pipeline {
             stage ("Prepare Docker"){
                 steps {
                     script {
-                        sh "echo 'Build number is ${env.BUILD_NUMBER}'"
-                        sh "echo ${env.ENV_WORKSPACE}"
                         sh "docker rm --force ${env.APP_CONTAINER_NAME}"
                         sh "docker rm --force ${env.TESTS_CONTAINER_NAME}"
                         sh "docker network ls|grep ${env.DOCKER_NETWORK} > /dev/null || docker network create --driver bridge ${env.DOCKER_NETWORK}"
