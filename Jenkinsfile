@@ -15,8 +15,8 @@ pipeline {
             stage ("Prepare Docker"){
                 steps {
                     script {
-                        sh "docker rm --force ${env.APP_CONTAINER_NAME}"
-                        sh "docker rm --force ${env.TESTS_CONTAINER_NAME}"
+                        sh "docker rm --force ${env.APP_CONTAINER_NAME} || true"
+                        sh "docker rm --force ${env.TESTS_CONTAINER_NAME} || true"
                     }
                 }
             }
@@ -99,5 +99,12 @@ pipeline {
                     }
                 }
             }
+           stage ("Remove app and tests containers"){
+               steps {
+                 script {
+                   sh "docker rm --force ${env.APP_CONTAINER_NAME}"
+                   sh "docker rm --force ${env.TESTS_CONTAINER_NAME}"
+                 }
+           }
     }
 }
