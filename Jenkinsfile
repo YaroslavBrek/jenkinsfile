@@ -105,6 +105,7 @@ pipeline {
                    sh "docker rm --force ${env.APP_CONTAINER_NAME}"
                    sh "docker rm --force ${env.TESTS_CONTAINER_NAME}"
                  }
+               }
            }
     }
 }
