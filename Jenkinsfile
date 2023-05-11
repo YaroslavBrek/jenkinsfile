@@ -22,7 +22,7 @@ pipeline {
             }
             stage('Build and start the application') {
                 steps {
-                    git 'https://github.com/YaroslavBrek/crud-app.git'
+                    git 'https://github.com/YaroslavBrek/crud-app1.git'
                     script {
                         sh "docker build -t ${env.APP_CONTAINER_NAME} ."
                         sh "docker run \
